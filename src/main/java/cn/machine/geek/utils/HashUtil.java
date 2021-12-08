@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class HashUtil {
 
-    public static String MD5UpperCase16(String original){
+    public static String MD5UpperCase16(String original) {
         String hash = MD5UpperCase32(original);
         return hash.equals("") ? "" : hash.toUpperCase();
     }
@@ -47,11 +47,11 @@ public class HashUtil {
 
             md.update(original.getBytes());
 
-            byte b[] = md.digest();
+            byte[] b = md.digest();
 
             int i;
 
-            StringBuffer buf = new StringBuffer("");
+            StringBuffer buf = new StringBuffer();
 
             for (int offset = 0; offset < b.length; offset++) {
                 i = b[offset];

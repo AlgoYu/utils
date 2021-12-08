@@ -2,39 +2,39 @@ package cn.machine.geek.utils;
 
 /**
  * @Title: ConvertUpMoney
- * @Description:  将数字金额转换为大写中文金额
+ * @Description: 将数字金额转换为大写中文金额
  * @date: 2019年6月18日 下午10:52:27
  */
 public class MoneyUtil {
 
     // 大写数字
-    private static final String[] NUMBERS = {"零","壹","贰","叁","肆","伍","陆","柒","捌","玖"};
+    private static final String[] NUMBERS = {"零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"};
     // 整数部分的单位
-    private static final String[] IUNIT = {"元","拾","佰","仟","万","拾","佰","仟","亿","拾","佰","仟","万","拾","佰","仟"};
+    private static final String[] IUNIT = {"元", "拾", "佰", "仟", "万", "拾", "佰", "仟", "亿", "拾", "佰", "仟", "万", "拾", "佰", "仟"};
     // 小数部分的单位
-    private static final String[] DUNIT = {"角","分","厘"};
+    private static final String[] DUNIT = {"角", "分", "厘"};
 
 
     /**
-    * @Author: MachineGeek
-    * @Description: 转换为中文大写金额
-    * @Date: 2020/10/9 18:43
-    * @param str:
-    * @return: java.lang.String
-    */
+     * @param str:
+     * @Author: MachineGeek
+     * @Description: 转换为中文大写金额
+     * @Date: 2020/10/9 18:43
+     * @return: java.lang.String
+     */
     public static String toChinese(String str) {
         // 判断输入的金额字符串是否符合要求
         if (null == str || "".equals(str) || !str.matches("(-)?[\\d]*(.)?[\\d]*")) {
             return "抱歉，请输入数字！";
         }
 
-        if("0".equals(str) || "0.00".equals(str) || "0.0".equals(str)) {
+        if ("0".equals(str) || "0.00".equals(str) || "0.0".equals(str)) {
             return "零元";
         }
 
         // 判断金额数字中是否存在负号"-"
         boolean flag = false;
-        if(str.startsWith("-")){
+        if (str.startsWith("-")) {
             // 标志位，标志此金额数字为负数
             flag = true;
             str = str.replaceAll("-", "");
@@ -46,26 +46,26 @@ public class MoneyUtil {
         String decimalStr;//小数部分数字
 
         // 初始化：分离整数部分和小数部分
-        if(str.indexOf(".")>0) {
-            integerStr = str.substring(0,str.indexOf("."));
+        if (str.indexOf(".") > 0) {
+            integerStr = str.substring(0, str.indexOf("."));
             decimalStr = str.substring(str.indexOf(".") + 1);
-        }else if(str.indexOf(".")==0) {
+        } else if (str.indexOf(".") == 0) {
             integerStr = "";
             decimalStr = str.substring(1);
-        }else {
+        } else {
             integerStr = str;
             decimalStr = "";
         }
 
         // beyond超出计算能力，直接返回
-        if(integerStr.length()>IUNIT.length) {
+        if (integerStr.length() > IUNIT.length) {
             return "超出计算能力！";
         }
 
         // 整数部分数字
         int[] integers = toIntArray(integerStr);
         // 判断整数部分是否存在输入012的情况
-        if (integers.length>1 && integers[0] == 0) {
+        if (integers.length > 1 && integers[0] == 0) {
             return "抱歉，输入数字不符合要求！";
         }
         // 设置万单位
@@ -74,100 +74,100 @@ public class MoneyUtil {
         int[] decimals = toIntArray(decimalStr);
         // 返回最终的大写金额
         String result = getChineseInteger(integers, isWan) + getChineseDecimal(decimals);
-        if(flag){
+        if (flag) {
             // 如果是负数，加上"负"
             return "负" + result;
-        }else{
+        } else {
             return result;
         }
     }
 
     /**
-    * @Author: MachineGeek
-    * @Description: 将字符串转为Int数组
-    * @Date: 2020/10/9 18:43
-    * @param number:
-    * @return: int[]
-    */
+     * @param number:
+     * @Author: MachineGeek
+     * @Description: 将字符串转为Int数组
+     * @Date: 2020/10/9 18:43
+     * @return: int[]
+     */
     private static int[] toIntArray(String number) {
         int[] array = new int[number.length()];
-        for(int i = 0;i<number.length();i++) {
-            array[i] = Integer.parseInt(number.substring(i,i+1));
+        for (int i = 0; i < number.length(); i++) {
+            array[i] = Integer.parseInt(number.substring(i, i + 1));
         }
         return array;
     }
 
     /**
-    * @Author: MachineGeek
-    * @Description: 将整数部分转为中文大写金额
-    * @Date: 2020/10/9 18:43
-    * @param integers:
+     * @param integers:
      * @param isWan:
-    * @return: java.lang.String
-    */
-    private static String getChineseInteger(int[] integers,boolean isWan) {
-        StringBuffer chineseInteger = new StringBuffer("");
+     * @Author: MachineGeek
+     * @Description: 将整数部分转为中文大写金额
+     * @Date: 2020/10/9 18:43
+     * @return: java.lang.String
+     */
+    private static String getChineseInteger(int[] integers, boolean isWan) {
+        StringBuffer chineseInteger = new StringBuffer();
         int length = integers.length;
         if (length == 1 && integers[0] == 0) {
             return "";
         }
-        for(int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             String key = "";
-            if(integers[i] == 0) {
-                if((length - i) == 13)//万（亿）
+            if (integers[i] == 0) {
+                if ((length - i) == 13)//万（亿）
                     key = IUNIT[4];
-                else if((length - i) == 9) {//亿
+                else if ((length - i) == 9) {//亿
                     key = IUNIT[8];
-                }else if((length - i) == 5 && isWan) {//万
+                } else if ((length - i) == 5 && isWan) {//万
                     key = IUNIT[4];
-                }else if((length - i) == 1) {//元
+                } else if ((length - i) == 1) {//元
                     key = IUNIT[0];
                 }
-                if((length - i)>1 && integers[i+1]!=0) {
+                if ((length - i) > 1 && integers[i + 1] != 0) {
                     key += NUMBERS[0];
                 }
             }
-            chineseInteger.append(integers[i]==0?key:(NUMBERS[integers[i]]+IUNIT[length - i -1]));
+            chineseInteger.append(integers[i] == 0 ? key : (NUMBERS[integers[i]] + IUNIT[length - i - 1]));
         }
         return chineseInteger.toString();
     }
 
     /**
-    * @Author: MachineGeek
-    * @Description: 将小写部分转换为中文大写金额
-    * @Date: 2020/10/9 18:42
-    * @param decimals:
-    * @return: java.lang.String
-    */
+     * @param decimals:
+     * @Author: MachineGeek
+     * @Description: 将小写部分转换为中文大写金额
+     * @Date: 2020/10/9 18:42
+     * @return: java.lang.String
+     */
     private static String getChineseDecimal(int[] decimals) {
-        StringBuffer chineseDecimal = new StringBuffer("");
-        for(int i = 0;i<decimals.length;i++) {
-            if(i == 3) {
+        StringBuffer chineseDecimal = new StringBuffer();
+        for (int i = 0; i < decimals.length; i++) {
+            if (i == 3) {
                 break;
             }
-            chineseDecimal.append(decimals[i]==0?"":(NUMBERS[decimals[i]]+DUNIT[i]));
+            chineseDecimal.append(decimals[i] == 0 ? "" : (NUMBERS[decimals[i]] + DUNIT[i]));
         }
         return chineseDecimal.toString();
     }
 
     /**
-    * @Author: MachineGeek
-    * @Description: 判断数值是否到达万
-    * @Date: 2020/10/9 18:42
-    * @param integerStr:
-    * @return: boolean
-    */
+     * @param integerStr:
+     * @Author: MachineGeek
+     * @Description: 判断数值是否到达万
+     * @Date: 2020/10/9 18:42
+     * @return: boolean
+     */
     private static boolean isWan5(String integerStr) {
         int length = integerStr.length();
-        if(length > 4) {
+        if (length > 4) {
             String subInteger = "";
-            if(length > 8) {
-                subInteger = integerStr.substring(length- 8,length -4);
-            }else {
-                subInteger = integerStr.substring(0,length - 4);
+            if (length > 8) {
+                subInteger = integerStr.substring(length - 8, length - 4);
+            } else {
+                subInteger = integerStr.substring(0, length - 4);
             }
             return Integer.parseInt(subInteger) > 0;
-        }else {
+        } else {
             return false;
         }
     }

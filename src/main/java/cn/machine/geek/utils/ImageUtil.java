@@ -11,13 +11,13 @@ import java.awt.image.BufferedImage;
  */
 public class ImageUtil {
     /**
-    * @Author: MachineGeek
-    * @Description: 将图片旋转任意角度
-    * @Date: 2020/9/27 14:29
-    * @param src: 需要旋转的图片
+     * @param src:   需要旋转的图片
      * @param angel: 角度
-    * @return: java.awt.image.BufferedImage
-    */
+     * @Author: MachineGeek
+     * @Description: 将图片旋转任意角度
+     * @Date: 2020/9/27 14:29
+     * @return: java.awt.image.BufferedImage
+     */
     public static BufferedImage Rotate(Image src, int angel) {
         int src_width = src.getWidth(null);
         int src_height = src.getHeight(null);
@@ -40,7 +40,7 @@ public class ImageUtil {
     public static Rectangle CalcRotatedSize(Rectangle src, int angel) {
         // if angel is greater than 90 degree, we need to do some conversion
         if (angel >= 90) {
-            if(angel / 90 % 2 == 1){
+            if (angel / 90 % 2 == 1) {
                 int temp = src.height;
                 src.height = src.width;
                 src.width = temp;

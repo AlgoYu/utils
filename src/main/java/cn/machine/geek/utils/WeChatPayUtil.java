@@ -6,19 +6,19 @@ import java.util.Map;
 import java.util.SortedMap;
 
 /**
-* @Author: MachineGeek
-* @Description: 微信支付工具类
-* @Date: 2020/9/27 11:57
-*/
+ * @Author: MachineGeek
+ * @Description: 微信支付工具类
+ * @Date: 2020/9/27 11:57
+ */
 public class WeChatPayUtil {
     /**
-    * @Author: MachineGeek
-    * @Description: 微信支付签名
-    * @Date: 2020/9/27 14:22
-    * @param map: 构建的请求参数
-    * @param apiKey: 微信支付的APIKEY
-    * @return: java.lang.String 签名的MD5字符串
-    */
+     * @param map:    构建的请求参数
+     * @param apiKey: 微信支付的APIKEY
+     * @Author: MachineGeek
+     * @Description: 微信支付签名
+     * @Date: 2020/9/27 14:22
+     * @return: java.lang.String 签名的MD5字符串
+     */
     public static String weChatPaySign(SortedMap<Object, Object> map, String apiKey) {
         StringBuffer sb = new StringBuffer();
         for (Map.Entry<Object, Object> m : map.entrySet()) {
@@ -34,14 +34,14 @@ public class WeChatPayUtil {
             byte[] digest = md5.digest(sb.toString().getBytes());
 
             int i;
-            StringBuffer buf = new StringBuffer("");
+            StringBuffer buf = new StringBuffer();
 
-            for(int offset=0; offset<digest.length; offset++){
+            for (int offset = 0; offset < digest.length; offset++) {
                 i = digest[offset];
-                if(i<0){
-                    i+=256;
+                if (i < 0) {
+                    i += 256;
                 }
-                if(i<16){
+                if (i < 16) {
                     buf.append("0");
                 }
                 buf.append(Integer.toHexString(i));
