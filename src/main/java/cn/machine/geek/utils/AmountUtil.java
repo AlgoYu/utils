@@ -5,7 +5,7 @@ package cn.machine.geek.utils;
  * @Description: 将数字金额转换为大写中文金额
  * @date: 2019年6月18日 下午10:52:27
  */
-public class MoneyUtil {
+public class AmountUtil {
 
     // 大写数字
     private static final String[] NUMBERS = {"零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"};
