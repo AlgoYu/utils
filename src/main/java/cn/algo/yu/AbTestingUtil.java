@@ -141,4 +141,25 @@ public class AbTestingUtil {
         double difference = confidenceDifference(n, standardDeviation, confidence);
         return new double[]{mean - difference, mean + difference};
     }
+
+    /**
+     * 当数据相互独立、是从两个正态分布的样本中随机抽样的、并且两个独立组有相等的方差时，您可以使用该检验。
+     * 如果两组方差不等，该怎么办？
+     * 您仍可以使用双样本 t 检验。可使用其他的标准差估计值。
+     *
+     * @param nA                 样本A的数量
+     * @param nB                 样本B的数量
+     * @param meanA              样本A的均值
+     * @param meanB              样本B的均值
+     * @param standardDeviationA 样本A的标准差
+     * @param standardDeviationB 样本B的标准差
+     * @return
+     */
+    public static double studentT(int nA, int nB, double meanA, double meanB, double standardDeviationA,
+        double standardDeviationB) {
+        double meanDiff = meanA - meanB;
+        double denominator =
+            (standardDeviationA * standardDeviationA / nA) + (standardDeviationB * standardDeviationB / nB);
+        return meanDiff / Math.sqrt(denominator);
+    }
 }
