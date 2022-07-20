@@ -61,7 +61,7 @@ public class AbTestingUtil {
     }
 
     /**
-     * 标准差计算函数
+     * 获取一组样本数据的标准差
      *
      * @param data 数据
      * @return 标准差
@@ -71,7 +71,27 @@ public class AbTestingUtil {
     }
 
     /**
-     * 获取置信区间的误差上下限值
+     * 获取一组全体数据的标准差
+     *
+     * @param data 数据
+     * @return 标准差
+     */
+    public static double populationDeviation(double[] data) {
+        return Math.sqrt(populationVariance(data));
+    }
+
+    /**
+     * 通过方差获取标准差
+     *
+     * @param variance 方差
+     * @return 标准差
+     */
+    public static double standardDeviation(double variance) {
+        return Math.sqrt(variance);
+    }
+
+    /**
+     * 获取一组样本数据的置信区间的误差上下限值
      *
      * @param data       数据
      * @param confidence 置信水平
@@ -84,6 +104,18 @@ public class AbTestingUtil {
     }
 
     /**
+     * 通过样本数量、标准差、置信水平获取置信区间上下限
+     *
+     * @param n                 样本数量
+     * @param standardDeviation 标准差
+     * @param confidence        置信水平
+     * @return
+     */
+    public static double confidenceDifference(int n, double standardDeviation, Confidence confidence) {
+        return confidence.value * standardDeviation / Math.sqrt(n);
+    }
+
+    /**
      * 获取置信区间
      *
      * @param data       数据
@@ -93,6 +125,20 @@ public class AbTestingUtil {
     public static double[] confidenceInterval(double[] data, Confidence confidence) {
         double mean = StatUtils.mean(data);
         double difference = confidenceDifference(data, confidence);
+        return new double[]{mean - difference, mean + difference};
+    }
+
+    /**
+     * 通过样本数量、标准差、置信水平获取置信区间
+     *
+     * @param n                 样本数量
+     * @param mean              均值
+     * @param standardDeviation 标准差
+     * @param confidence        置信水平
+     * @return
+     */
+    public static double[] confidenceInterval(int n, int mean, double standardDeviation, Confidence confidence) {
+        double difference = confidenceDifference(n, standardDeviation, confidence);
         return new double[]{mean - difference, mean + difference};
     }
 }
