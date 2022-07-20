@@ -1,8 +1,8 @@
 package cn.machine.geek.test;
 
-import cn.machine.geek.utils.RandomUtil;
-import cn.machine.geek.utils.WeChatPayUtil;
-import cn.machine.geek.utils.XMLUtil;
+import cn.algo.yu.RandomUtil;
+import cn.algo.yu.WeChatPayUtil;
+import cn.algo.yu.XMLUtil;
 
 import java.util.HashMap;
 import java.util.Map;
