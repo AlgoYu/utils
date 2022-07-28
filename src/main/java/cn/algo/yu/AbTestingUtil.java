@@ -1,5 +1,6 @@
 package cn.algo.yu;
 
+import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.stat.StatUtils;
 
 /**
@@ -9,6 +10,9 @@ import org.apache.commons.math3.stat.StatUtils;
  * 只有在commons-math3包中没有的计算，才会实现。
  */
 public class AbTestingUtil {
+    // 正态（高斯）分布
+    private static final NormalDistribution normalDistribution = new NormalDistribution();
+
     /**
      * 置信水平常量
      */
@@ -153,7 +157,7 @@ public class AbTestingUtil {
      * @param meanB              样本B的均值
      * @param standardDeviationA 样本A的标准差
      * @param standardDeviationB 样本B的标准差
-     * @return
+     * @return T统计量
      */
     public static double studentT(int nA, int nB, double meanA, double meanB, double standardDeviationA,
         double standardDeviationB) {
@@ -161,5 +165,54 @@ public class AbTestingUtil {
         double denominator =
             (standardDeviationA * standardDeviationA / nA) + (standardDeviationB * standardDeviationB / nB);
         return meanDiff / Math.sqrt(denominator);
+    }
+
+    /**
+     * 当数据相互独立、是从两个正态分布的样本中随机抽样的、并且两个独立组有相等的方差时，您可以使用该检验。
+     * 如果两组方差不等，该怎么办？
+     * 您仍可以使用双样本 t 检验。可使用其他的标准差估计值。
+     *
+     * @param nA        样本A的数量
+     * @param nB        样本B的数量
+     * @param meanA     样本A的均值
+     * @param meanB     样本B的均值
+     * @param varianceA 样本A的方差
+     * @param varianceB 样本B的方差
+     * @return T统计量
+     */
+    public static double studentT(double meanA, double meanB, double varianceA, double varianceB, int nA, int nB) {
+        double meanDiff = meanA - meanB;
+        double denominator = (varianceA / nA) + (varianceB / nB);
+        return meanDiff / Math.sqrt(denominator);
+    }
+
+    /**
+     * 根据T统计量计算P值
+     *
+     * @param tScore T统计量
+     * @return P值
+     */
+    public static double getPValue(double tScore) {
+        // For a random variable X whose values are distributed according to this distribution, this method returns P(X <= x).
+        // 对tScore进行绝对值，拿分布图的右边计算面积
+        double area = normalDistribution.cumulativeProbability(Math.abs(tScore));
+        return (1 - area) * 2;
+    }
+
+    /**
+     * 获取P值
+     *
+     * @param nA                 样本A的数量
+     * @param nB                 样本B的数量
+     * @param meanA              样本A的均值
+     * @param meanB              样本B的均值
+     * @param standardDeviationA 样本A的标准差
+     * @param standardDeviationB 样本B的标准差
+     * @return
+     */
+    public static double getPValue(int nA, int nB, double meanA, double meanB, double standardDeviationA,
+        double standardDeviationB) {
+        double tScore = studentT(nA, nB, meanA, meanB, standardDeviationA, standardDeviationB);
+        return getPValue(tScore);
     }
 }
