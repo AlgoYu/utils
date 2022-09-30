@@ -1,16 +1,20 @@
 package cn.algo.yu;
 
 public class IpUtil {
-    public static int ip2Int(String ipString) {
-        // 取 ip 的各段
-        String[] ipSlices = ipString.split("\\.");
-        int rs = 0;
-        for (int i = 0; i < ipSlices.length; i++) {
-            // 将 ip 的每一段解析为 int，并根据位置左移 8 位
-            int intSlice = Integer.parseInt(ipSlices[i]) << 8 * i;
-            // 或运算
-            rs = rs | intSlice;
+    public static long ip2long(String ip) {
+        String[] fields = ip.split("\\.");
+        if (fields.length != 4) {
+            return 0L;
         }
-        return rs;
+        return Long.parseLong(fields[0]) << 24 | Long.parseLong(fields[1]) << 16 | Long.parseLong(fields[2]) << 8 | Long.parseLong(fields[3]);
+    }
+
+    public static String long2ip(long ip) {
+        int[] b = new int[4];
+        b[0] = (int) ((ip >> 24) & 0xff);
+        b[1] = (int) ((ip >> 16) & 0xff);
+        b[2] = (int) ((ip >> 8) & 0xff);
+        b[3] = (int) (ip & 0xff);
+        return Integer.toString(b[0]) + "." + Integer.toString(b[1]) + "." + Integer.toString(b[2]) + "." + Integer.toString(b[3]);
     }
 }
