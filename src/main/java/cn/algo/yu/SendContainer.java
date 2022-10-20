@@ -8,13 +8,17 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 
+/**
+ * 发送容器，按尺寸和速度进行限制
+ * @param <T>
+ */
 public class SendContainer<T> {
     private List<T> data;
-    private ReentrantLock lock;
-    private ScheduledExecutorService scheduledExecutorService;
-    private long delay;
-    private Consumer<List<T>> consumer;
-    private int size;
+    private final ReentrantLock lock;
+    private final ScheduledExecutorService scheduledExecutorService;
+    private final long delay;
+    private final Consumer<List<T>> consumer;
+    private final int size;
 
     public SendContainer(int size, long delay, Consumer<List<T>> consumer) {
         // 最小50个，最大10000个
