@@ -9,16 +9,16 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 
 /**
- * 发送容器，按尺寸和速度进行限制
+ * 按固定的速度或者最大size进行发送
  * @param <T>
  */
 public class SendContainer<T> {
     private List<T> data;
-    private final ReentrantLock lock;
-    private final ScheduledExecutorService scheduledExecutorService;
-    private final long delay;
-    private final Consumer<List<T>> consumer;
-    private final int size;
+    private ReentrantLock lock;
+    private ScheduledExecutorService scheduledExecutorService;
+    private long delay;
+    private Consumer<List<T>> consumer;
+    private int size;
 
     public SendContainer(int size, long delay, Consumer<List<T>> consumer) {
         // 最小50个，最大10000个
@@ -47,7 +47,6 @@ public class SendContainer<T> {
                 List<T> copy = copyAndClean();
                 lock.unlock();
                 consumer.accept(copy);
-                System.out.println("尺寸限制发送" + copy.size() + "个");
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
@@ -92,7 +91,6 @@ public class SendContainer<T> {
                 List<T> copy = copyAndClean();
                 lock.unlock();
                 consumer.accept(copy);
-                System.out.println("定时任务发送" + copy.size() + "个");
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             } finally {
