@@ -10,13 +10,10 @@ public class DateUtil {
     /**
      * 获取指定的时区在指定时间时的零时区时间。
      */
-    public static long getTimeStamp(int year, int month, int dayOfMonth, int hour, int minute, int second, String zone) {
+    public static long getTimeStampM(int year, int month, int dayOfMonth, int hour, int minute, int second, String zone) {
         // 初始化相关时区的时间
-        LocalDateTime localDateTime = LocalDateTime.of(year, month, dayOfMonth, hour, minute, second);
-        ZonedDateTime utc = localDateTime.atZone(ZoneId.of(zone));
-        // 转换为零时区
-        ZonedDateTime zonedDateTime = utc.withZoneSameInstant(ZoneId.from(ZoneOffset.UTC));
-        // 返回时间戳
-        return Timestamp.valueOf(zonedDateTime.toLocalDateTime()).getTime();
+        return LocalDateTime.of(year, month, dayOfMonth, hour, minute, second)
+                .toInstant(ZoneOffset.of(zone))
+                .toEpochMilli();
     }
 }
